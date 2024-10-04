@@ -1,8 +1,9 @@
 import { useRef } from "react";
 
-function Answers({ onSelect, answers, selectedAnswer, answerState }) {
+function Answers({ onSelect, answers, selectedAnswer, answerStatus }) {
   const shuffledAnswers = useRef();
-  if (answerState === "") {
+
+  if (!shuffledAnswers.current) {
     shuffledAnswers.current = [...answers].sort(() => Math.random() - 0.5);
   }
 
@@ -11,19 +12,23 @@ function Answers({ onSelect, answers, selectedAnswer, answerState }) {
       {shuffledAnswers.current.map((answer) => {
         const isSelected = selectedAnswer === answer;
         let buttonCssClass = "";
-        if (answerState === "answered" && isSelected) {
+        if (answerStatus === "answered" && isSelected) {
           buttonCssClass = "selected";
         }
         if (
-          (answerState === "correct" || answerState === "wrong") &&
+          (answerStatus === "correct" || answerStatus === "wrong") &&
           isSelected
         ) {
-          buttonCssClass = answerState;
+          buttonCssClass = answerStatus;
         }
 
         return (
           <li className="answer" key={answer}>
-            <button className={buttonCssClass} onClick={() => onSelect(answer)}>
+            <button
+              className={buttonCssClass}
+              onClick={() => onSelect(answer)}
+              disabled={answerStatus !== ""}
+            >
               {answer}
             </button>
           </li>
