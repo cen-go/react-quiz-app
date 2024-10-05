@@ -23,7 +23,7 @@ function Quiz() {
     [handleSelectAnswer]);
 
   if (quizIsFinished) {
-    return <Summary />;
+    return <Summary selectedAnswers={userAnswers} />;
   }
 
   return (
